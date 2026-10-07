@@ -1,5 +1,4 @@
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE DeriveDataTypeable #-}
 
 module Network.DNS.Transport (
     Resolver(..)
@@ -39,7 +38,7 @@ checkRespM q seqno resp
 
 ----------------------------------------------------------------
 
-data TCPFallback = TCPFallback deriving (Show, Typeable)
+data TCPFallback = TCPFallback deriving (Show)
 instance Exception TCPFallback
 
 type Rslv0 = QueryControls -> (Socket -> IO DNSMessage)

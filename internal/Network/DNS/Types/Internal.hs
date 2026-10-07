@@ -1,5 +1,4 @@
 {-# OPTIONS_HADDOCK hide #-}
-{-# LANGUAGE DeriveDataTypeable #-}
 {-# LANGUAGE PatternSynonyms #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE RecordWildCards #-}
@@ -247,7 +246,7 @@ data DNSError =
     -- | Error is unknown
   | DecodeError String
   | UnknownDNSError
-  deriving (Eq, Show, Typeable)
+  deriving (Eq, Show)
 
 instance Exception DNSError
 
