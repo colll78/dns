@@ -36,11 +36,14 @@ import Network.DNS.Types.Resolver
 --   to understand the concrete behavior.
 --   Cache is used if 'resolvCache' is 'Just'.
 --
---   Example:
+--   This example performs a live DNS query. Record values and counts can
+--   change, so @Right ...@ matches any successful result list, including
+--   @Right []@. Errors are still rejected.
+--   Internet access is required.
 --
 --   >>> rs <- makeResolvSeed defaultResolvConf
 --   >>> withResolver rs $ \resolver -> lookup resolver "www.example.com" A
---   Right [93.184.216.34]
+--   Right ...
 --
 lookup :: Resolver -> Domain -> TYPE -> IO (Either DNSError [RData])
 lookup = lookupSection Answer
