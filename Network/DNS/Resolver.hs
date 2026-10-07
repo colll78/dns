@@ -73,7 +73,10 @@ makeAddrInfo addr mport = do
           }
         -- 53 is the standard port number for domain name servers as assigned by IANA
         serv = maybe "53" show mport
-    head <$> getAddrInfo (Just hints) (Just addr) (Just serv)
+    addresses <- getAddrInfo (Just hints) (Just addr) (Just serv)
+    pure $ case addresses of
+        firstAddress : _ -> firstAddress
+        [] -> error "Network.DNS.Resolver.makeAddrInfo: getAddrInfo returned no addresses"
 
 ----------------------------------------------------------------
 

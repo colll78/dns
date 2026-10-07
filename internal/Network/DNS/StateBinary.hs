@@ -293,7 +293,9 @@ runSGetAt t parser inp =
   where
     toResult :: A.Result r -> Either DNSError r
     toResult (A.Done _ r)        = Right r
-    toResult (A.Fail _ ctx msg)  = Left $ DecodeError $ head $ ctx ++ [msg]
+    toResult (A.Fail _ ctx msg)  = Left $ DecodeError $ case ctx of
+        first : _ -> first
+        []        -> msg
     toResult (A.Partial _)       = Left $ DecodeError "incomplete input"
 
 runSGet :: SGet a -> ByteString -> Either DNSError (a, PState)
@@ -309,7 +311,9 @@ runSGetWithLeftoversAt t parser inp =
     toResult :: A.Result r -> Either DNSError (r, ByteString)
     toResult (A.Done     i r) = Right (r, i)
     toResult (A.Partial  f)   = toResult $ f BS.empty
-    toResult (A.Fail _ ctx e) = Left $ DecodeError $ head $ ctx ++ [e]
+    toResult (A.Fail _ ctx e) = Left $ DecodeError $ case ctx of
+        first : _ -> first
+        []        -> e
 
 runSGetWithLeftovers :: SGet a -> ByteString -> Either DNSError ((a, PState), ByteString)
 runSGetWithLeftovers = runSGetWithLeftoversAt dnsTimeMid
