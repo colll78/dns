@@ -2,11 +2,11 @@
 
 module IOSpec where
 
-import Network.Socket hiding (send)
+import Network.Socket (AddrInfo(..), AddrInfoFlag(..), Family(..), Socket,
+                       SocketType(..), connect, defaultHints, getAddrInfo, socket)
 import Test.Hspec
 
 import Network.DNS.IO as DNS
-import Network.DNS.Imports
 import Network.DNS.Types as DNS
 
 spec :: Spec

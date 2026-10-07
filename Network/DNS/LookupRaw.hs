@@ -124,7 +124,7 @@ lookupCacheSection rlv dom typ cconf = do
       Just (_,x) -> return x
   where
     toRR = filter (typ `isTypeOf`) . answer
-    Just c = cache rlv
+    c = fromMaybe (error "lookupCacheSection: resolver cache is missing") (cache rlv)
     key = (dom,typ)
 
 cachePositive :: CacheConf -> Cache -> Key -> [ResourceRecord] -> IO ()

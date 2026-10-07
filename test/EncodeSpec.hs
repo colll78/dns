@@ -30,11 +30,11 @@ check1 inp = out `shouldBe` Right inp
     out = decode bs
 
 check2 :: DNSMessage -> Expectation
-check2 inp = bs' `shouldBe` bs
+check2 inp = case decode bs of
+    Left err -> expectationFailure $ "Encoded DNSMessage did not decode: " ++ show err
+    Right out -> encode out `shouldBe` bs
   where
     bs = encode inp
-    Right out = decode bs
-    bs' = encode out
 
 defaultHeader :: DNSHeader
 defaultHeader = header defaultQuery
