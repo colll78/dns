@@ -284,10 +284,10 @@ getRData NSEC3PARAM _ = RD_NSEC3PARAM <$> decodeHashAlg
 --
 getRData CAA len = do
     dend <- rdataEnd len
-    flags <- get8
+    caaFlags <- get8
     tag <- getInt8 >>= getNByteString
     tpos <- getPosition
-    RD_CAA flags (CI.mk tag) <$> getNByteString (dend - tpos)
+    RD_CAA caaFlags (CI.mk tag) <$> getNByteString (dend - tpos)
 --
 getRData _  len = UnknownRData <$> getNByteString len
 

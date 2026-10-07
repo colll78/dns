@@ -8,7 +8,8 @@ on:
 
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
+    # GHC 8.10/9.0 need LLVM 9-12 on Apple Silicon; Intel uses native codegen.
+    runs-on: ${{ matrix.os == 'macOS-latest' && (matrix.ghc == '8.10' || matrix.ghc == '9.0') && 'macos-15-intel' || matrix.os }}
 
     strategy:
       fail-fast: false
@@ -22,10 +23,10 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - uses: haskell/actions/setup@v2
+    - uses: haskell-actions/setup@v2
       with:
         ghc-version: ${{ matrix.ghc }}
-        cabal-version: latest
+        cabal-version: '3.16.1.0'
 
     - name: Cache
       uses: actions/cache@v3
@@ -33,11 +34,11 @@ jobs:
         cache-name: cache-cabal
       with:
         path: ~/.cabal
-        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/*.cabal') }}-${{ hashFiles('**/cabal.project') }}
+        key: ${{ runner.os }}-${{ runner.arch }}-build-${{ env.cache-name }}-${{ hashFiles('**/*.cabal') }}-${{ hashFiles('**/cabal.project') }}
         restore-keys: |
-          ${{ runner.os }}-build-${{ env.cache-name }}-
-          ${{ runner.os }}-build-
-          ${{ runner.os }}-
+          ${{ runner.os }}-${{ runner.arch }}-build-${{ env.cache-name }}-
+          ${{ runner.os }}-${{ runner.arch }}-build-
+          ${{ runner.os }}-${{ runner.arch }}-
 
     - name: Install dependencies
       run: |

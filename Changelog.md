@@ -1,5 +1,13 @@
 # ChangeLog
 
+## 4.2.0.1
+
+- Use `time-hourglass` 0.3 for both library components, allowing modern TLS
+  consumers to share one time provider when building static executables.
+  DNS lookup, encoding and decoding APIs are unchanged.
+- Require GHC 8.6 or newer (`base >= 4.12`), as required by `time-hourglass` 0.3.
+- Fix inherited compiler warnings so libraries and existing tests build with `-Werror`.
+
 ## 4.2.0
 
 - Switching cryptonite to crypton.

@@ -62,8 +62,9 @@ spec = do
 
     prop "EDNS" . forAll genEDNSHeader $ \(edns, hdr) -> do
         let eh = EDNSheader edns
-            Right m = decode. encode $ DNSMessage hdr eh [] [] [] []
-        ednsHeader m `shouldBe` eh
+        case decode $ encode $ DNSMessage hdr eh [] [] [] [] of
+            Left err -> expectationFailure $ "Encoded EDNS message did not decode: " ++ show err
+            Right m -> ednsHeader m `shouldBe` eh
 
 ----------------------------------------------------------------
 
